@@ -142,42 +142,40 @@
 
     <script>
         function calculateResults(){
-            let characters = parseInt(document.getElementById("characters").value)
-            let capitals = parseInt(document.getElementById("capitals").value)
-            let symbols = parseInt(document.getElementById("symbols").value)
-            let numbers = parseInt(document.getElementById("numbers").value)
+            let characters = BigInt(document.getElementById("characters").value)
+            let capitals = BigInt(document.getElementById("capitals").value)
+            let symbols = BigInt(document.getElementById("symbols").value)
+            let numbers = BigInt(document.getElementById("numbers").value)
             resultsDiv = document.getElementById("results")
             if ((capitals + symbols + numbers) > characters){
                 console.log("Invalid input")
                 return
             }
-            initial_password_count = 95**characters
+            initial_password_count = 95n**characters
             password_count = initial_password_count
-            resultsDiv.innerHTML = `<p>initial possible passwords are: ${initial_password_count} </p>` 
+            resultsDiv.innerHTML = `<p>initial possible passwords are: ${initial_password_count}  or ${Number(initial_password_count).toExponential(3)}</p>` 
             percentage_lost = 0
             if (capitals > 0){
-                password_count = parseInt(password_count / 95**capitals) * (27*capitals) 
+                password_count = BigInt(password_count / 95n**capitals) * (27n*capitals) 
                 count_lost = initial_password_count - password_count
-                percentage_lost = (1 - (password_count/initial_password_count))* 100
-                //console.log(`With ${capitals} Capital(s) the new number of possible passwords are: ${password_count} or ${count_lost}/ ${percentage_lost}% less than original` )
-                resultsDiv.innerHTML += `<p>By <strong>requiring</strong> ${capitals} Capital(s) the new number of possible passwords are: ${password_count} <br> This means you lost ${count_lost} possibilities, or ${percentage_lost}% less than original</p>`
+                percentage_lost = (Number(count_lost*1000n/initial_password_count)/1000)* 100
+                console.log(`With ${capitals} Capital(s) the new number of possible passwords are: ${Number(password_count).toExponential(3)} or ${Number(count_lost).toExponential(3)}/ ${percentage_lost}% less than original` )
+                resultsDiv.innerHTML += `<p>By <strong>requiring</strong> ${capitals} Capital(s) the new number of possible passwords are: ${Number(password_count).toExponential(3)} <br> This means you lost ${Number(count_lost).toExponential(3)} possibilities, or ${percentage_lost}% less than original</p>`
             }
             
             if (symbols > 0){
-                password_count = parseInt(password_count / 95**symbols) * (31*symbols) 
+                password_count = BigInt(password_count / 95n**symbols) * (31n*symbols) 
                 count_lost = initial_password_count - password_count
-                percentage_lost = (1 - (password_count/initial_password_count))* 100
+                percentage_lost = (Number(count_lost*1000n/initial_password_count)/1000)* 100
                 resultsDiv.innerHTML += `<p>By <strong>requiring</strong> ${symbols} Symbols(s) the new number of possible passwords are: ${password_count} <br> This means you lost ${count_lost} possibilities, or ${percentage_lost}% less than original</p>`
-
-                console.log(`Passwords are: ${password_count} or ${initial_password_count- password_count}/ ${(1 - (password_count/initial_password_count))* 100}% less than original` )
             }
 
             if (numbers > 0){
-                password_count = parseInt(password_count / 95**numbers) * (10*numbers) 
+                password_count = BigInt(password_count / 95n**numbers) * (10n*numbers) 
                 count_lost = initial_password_count - password_count
-                percentage_lost = (1 - (password_count/initial_password_count))* 100
+                //console.log(Number(count_lost*1000n/initial_password_count)/100)
+                percentage_lost = (Number(count_lost*1000n/initial_password_count)/1000)* 100
                 resultsDiv.innerHTML += `<p>By <strong>requiring</strong> ${symbols} Symbols(s) the new number of possible passwords are: ${password_count} <br> This means you lost ${count_lost} possibilities, or ${percentage_lost}% less than original</p>`
-                console.log(`Passwords are: ${password_count} or ${initial_password_count- password_count}/ ${(1 - (password_count/initial_password_count))* 100}% less than original` )
             }
         }
     </script>
