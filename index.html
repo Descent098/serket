@@ -6,108 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Serket</title>
 
-    <style>
-        *{
-            margin: 0; 
-            box-sizing: border-box;
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-
-        }
-        .background{
-            /* From https://css.glass */
-            background: rgba(255, 255, 255, 0.25);
-            border-radius: 16px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(7.9px);
-            -webkit-backdrop-filter: blur(7.9px);
-            border: 1px solid rgba(255, 255, 255, 0.19);
-            width: 90%;
-            display: flex;
-            justify-content: center;
-            margin: 0 auto;
-            margin-top:2vh;
-            min-height: 90vh;
-            flex-direction: column;
-            padding-bottom: 1vh;
-            margin-bottom: 1vh;
-        }
-        section{
-            /* From https://css.glass */
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 16px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(12.3px);
-            -webkit-backdrop-filter: blur(12.3px);
-            border: 1px solid rgba(255, 255, 255, 0.19);
-            width: 95%;
-            padding-bottom: 1vh;
-            padding-top: 2vh;
-            margin: 0 auto;
-            margin-top:2vh;
-            text-align: center;
-            justify-content: center;
-        }
-        body{
-            display: flex;
-            justify-content: center;
-            background: rgb(39,138,255);
-            background: radial-gradient(circle, rgba(39,138,255,1) 25%, rgba(0,244,200,1) 75%);
-            margin:0 auto;
-            padding: 2vh auto;
-        }
-        .form{
-            display:flex;
-            flex-direction: column;
-            justify-content: center;
-            color: #404040;
-            text-align: center;
-            padding: 3%;
-            font-size: 1.4em;
-            margin: 2% 8%;
-            font-variant-caps: all-small-caps;
-            font-weight: bolder;
-
-        }
-        output{
-            padding-bottom: 5vh;
-        }
-
-        h1{
-            font-size: 2.5em;
-        }
-        button{
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 16px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(12.3px);
-            -webkit-backdrop-filter: blur(12.3px);
-            border: 1px solid rgba(255, 255, 255, 0.19);
-            color: #404040;
-            font-weight: bold;
-            border-radius: 5%;
-            font-size: 1.2em;
-            padding: .5rem;
-            margin: 0 1rem;
-            font-variant-caps: all-small-caps;
-        }
-        button:hover{
-            scale: 1.1;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="background">
         <section>
             <h1>Serket</h1>
-            <h3>Avoid getting stung by password requirements. 
+            <h2>Avoid getting stung by password requirements. 
                 <br>
-                This is a tool designed to help you see the ramifications of requirements on passwords!</h3>
-                <br><p>This tool does not tell the full story. It is just meant to be a reference for comparison so you can actually see what has less likelyhood.
+                This is a tool designed to help you see the ramifications of requirements on passwords!
+            </h2>
+
+            <br><p>This tool does not tell the full story. It is just meant to be a reference for comparison so you can actually see what has less likelyhood.
                     
-                    For example a system that only requires 5 characters (7.7 billion possibilities) still has less possible passwords than one with 8 that requires 1 capital and 2 symbols(1.3 * 10^13 or ~13 trillion). 
-                    <br>
-                    <br>
-                    Likewise if you do remove all requirements, most users will just do lowercase letters, which means that a password of length 5 with 1 capital and 1 symbol (717 million), vs 6 characters all lowercase (387 million) </p>
+                For example a system that only requires 5 characters (7.7 billion possibilities) still has less possible passwords than one with 8 that requires 1 capital and 2 symbols(1.3 * 10^13 or ~13 trillion). 
+                <br>
+                <br>
+                Likewise if you do remove all requirements, most users will just do lowercase letters, which means that a password of length 5 with 1 capital and 1 symbol (717 million), vs 6 characters all lowercase (387 million) </p>
                 <br>
                 <br>
                 <div id="results">
@@ -132,52 +47,14 @@
                 <input type="range" name="numbers" id="numbers" value="0" min="0" max="24" oninput="this.nextElementSibling.value = this.value" onload="this.nextElementSibling.innerText = 0; this.value = 0">
                 <output>0</output>
                 <span>
-                    <button>Show full animation </button>
+                    <button onclick="alert('not yet implemented')">Show full animation </button>
                     <button onclick="calculateResults()">Show Boring Results </button>
                 </span>
             </form>
         </section>
     </div>
     
+    <script src="calculations.js"></script>
 
-    <script>
-        function calculateResults(){
-            let characters = BigInt(document.getElementById("characters").value)
-            let capitals = BigInt(document.getElementById("capitals").value)
-            let symbols = BigInt(document.getElementById("symbols").value)
-            let numbers = BigInt(document.getElementById("numbers").value)
-            resultsDiv = document.getElementById("results")
-            if ((capitals + symbols + numbers) > characters){
-                console.log("Invalid input")
-                return
-            }
-            initial_password_count = 95n**characters
-            password_count = initial_password_count
-            resultsDiv.innerHTML = `<p>initial possible passwords are: ${initial_password_count}  or ${Number(initial_password_count).toExponential(3)}</p>` 
-            percentage_lost = 0
-            if (capitals > 0){
-                password_count = BigInt(password_count / 95n**capitals) * (27n*capitals) 
-                count_lost = initial_password_count - password_count
-                percentage_lost = (Number(count_lost*1000n/initial_password_count)/1000)* 100
-                console.log(`With ${capitals} Capital(s) the new number of possible passwords are: ${Number(password_count).toExponential(3)} or ${Number(count_lost).toExponential(3)}/ ${percentage_lost}% less than original` )
-                resultsDiv.innerHTML += `<p>By <strong>requiring</strong> ${capitals} Capital(s) the new number of possible passwords are: ${Number(password_count).toExponential(3)} <br> This means you lost ${Number(count_lost).toExponential(3)} possibilities, or ${percentage_lost}% less than original</p>`
-            }
-            
-            if (symbols > 0){
-                password_count = BigInt(password_count / 95n**symbols) * (31n*symbols) 
-                count_lost = initial_password_count - password_count
-                percentage_lost = (Number(count_lost*1000n/initial_password_count)/1000)* 100
-                resultsDiv.innerHTML += `<p>By <strong>requiring</strong> ${symbols} Symbols(s) the new number of possible passwords are: ${password_count} <br> This means you lost ${count_lost} possibilities, or ${percentage_lost}% less than original</p>`
-            }
-
-            if (numbers > 0){
-                password_count = BigInt(password_count / 95n**numbers) * (10n*numbers) 
-                count_lost = initial_password_count - password_count
-                //console.log(Number(count_lost*1000n/initial_password_count)/100)
-                percentage_lost = (Number(count_lost*1000n/initial_password_count)/1000)* 100
-                resultsDiv.innerHTML += `<p>By <strong>requiring</strong> ${symbols} Symbols(s) the new number of possible passwords are: ${password_count} <br> This means you lost ${count_lost} possibilities, or ${percentage_lost}% less than original</p>`
-            }
-        }
-    </script>
 </body>
 </html>
