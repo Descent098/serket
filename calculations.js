@@ -44,10 +44,10 @@ function calculateSHA512Time(possiblePasswords){
 function calculateResults(){
 
     // Initialize constants for character amounts
-    const totalUppercase= 27n // Amount of characters in alphabet
+    const totalUppercase= 26n // Amount of characters in alphabet
     const totalNumbers = 10n // Amount of possible number characters
-    const totalSymbols = 31n // Total number of possible symbols (i.e. !@#$%^&* etc.)
-    const totalCharacters = 95n // The number of total valid characters for passwords
+    const totalSymbols = 32n // Total number of possible symbols (i.e. !@#$%^&* etc.)
+    const totalCharacters = 94n // The number of total valid characters for passwords
     const precision = 1000n // The numebr of digits of precision in BigInt Calculations (i.e. 1000 = 3 digits)
 
     // Parse user input
