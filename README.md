@@ -2,11 +2,7 @@
 
 Avoid Getting Stung By Password Requirements.
 
-## About the name
 
-Serket is a godess in egyptian mythology typically symbolized with a scorpion. There are a few different etymologies of the mythology, but the spirit of the name is that venom and stings can be healing. An aphorism is that the strongest stings bring the tastiest honey.
-
-Likewise recognizing how bad your password practices are can sting, but ultimately it should end in something better.
 
 ## Todo
 
